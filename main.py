@@ -84,9 +84,7 @@ def send_deal():
             get_rec += rec
             sys.stdout.write(rec)
             sys.stdout.flush()
-
     get_t = get_rec.split(",")
-
     offset_frequence = int(get_t[1])-(850 if int(get_t[1])>850 else 410)
     #
     # the sending message format
@@ -95,7 +93,11 @@ def send_deal():
     #         high 8bit address           low 8bit address                    frequency                address                 address                  frequency             message payload
     data = bytes([int(get_t[0])>>8]) + bytes([int(get_t[0])&0xff]) + bytes([offset_frequence]) + bytes([node.addr>>8]) + bytes([node.addr&0xff]) + bytes([node.offset_freq]) + get_t[2].encode()
 
-    node.send(data)
+    import struct
+    data = struct.pack('<HBHB', int(get_t[0]), offset_frequence, int(node.addr), node.offset_freq)
+    data += get_t[2].encode()
+    print(data.decode())
+    node.send(0, 868, data)
     print('\x1b[2A',end='\r')
     print(" "*200)
     print(" "*200)

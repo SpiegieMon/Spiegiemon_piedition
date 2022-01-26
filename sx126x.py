@@ -240,12 +240,14 @@ class sx126x:
 # the data format like as following
 # "node address,frequence,payload"
 # "20,868,Hello World"
-    def send(self,data):
+    def send(self, dest_addr, freq, datastring):
         GPIO.output(self.M1,GPIO.LOW)
         GPIO.output(self.M0,GPIO.LOW)
         time.sleep(0.1)
 
-        self.ser.write(data)
+        # data = bytes([int(dest_addr)>>8]) + bytes([int(dest_addr)&0xff]) + bytes(int(freq)-self.start_freq) + bytes([self.addr>>8]) + bytes([self.addr&0xff]) + bytes([self.offset_freq]) + datastring.encode()
+
+        self.ser.write(datastring)
         # if self.rssi == True:
             # self.get_channel_rssi()
         time.sleep(0.1)
@@ -258,7 +260,7 @@ class sx126x:
 
             print("receive message from node address with frequence\033[1;32m %d,%d.125MHz\033[0m"%((r_buff[0]<<8)+r_buff[1],r_buff[2]+self.start_freq),end='\r\n',flush = True)
             #print("message is "+str(r_buff[3:-1]),end='\r\n')
-            print("message is "+r_buff[3:-1].decode("utf-8"),end='\r\n')
+            print("message is "+r_buff[3:].decode("utf-8"),end='\r\n')
             
             # print the rssi
             if self.rssi:
