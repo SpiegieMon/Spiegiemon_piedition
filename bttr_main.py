@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 import bttr_sx126x
 import os
+import sys
+import signal
 from consolemenu import *
 from consolemenu.items import *
+from threading import Thread, Lock
 
 ttydevices = ["/dev/ttyS0", "/dev/ttyAMA0"]
 
@@ -12,25 +15,22 @@ else:
     ttydevice = ttydevices[1]
 node = bttr_sx126x.sx126x(serial_num = ttydevice,freq=868,addr=100,power=22,rssi=True)
 
+node_lock = Lock()
+
 def send(data):
+    node_lock.acquire()
     node.send(data)
+    node_lock.release()
 
-def ui_send():
-    pu = PromptUtils(Screen())
-    # PromptUtils.input() returns an InputResult
-    result = pu.input("Text: ")
-    send(result.input_string)
+def input_loop():
+    text = input()
+    send(text)
 
-def ui_recv():
-    while True:
-        node.receive()
+input_thread = Thread(target=input_loop)
+input_thread.start()
 
-menu = ConsoleMenu("Hauptmenue")
-
-sendtext_item = FunctionItem("Text senden", ui_send)
-recv_item = FunctionItem("Text empfangen", ui_recv)
-
-menu.append_item(sendtext_item)
-menu.append_item(recv_item)
-
-menu.show()
+while True:
+    node_lock.acquire()
+    node.receive()
+    node_lock.release()
+input_thread.exit()
