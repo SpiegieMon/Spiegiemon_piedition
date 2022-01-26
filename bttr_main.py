@@ -3,8 +3,6 @@ import bttr_sx126x
 import os
 import sys
 import signal
-from consolemenu import *
-from consolemenu.items import *
 from threading import Thread, Lock
 
 ttydevices = ["/dev/ttyS0", "/dev/ttyAMA0"]
