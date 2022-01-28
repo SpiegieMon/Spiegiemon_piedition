@@ -61,7 +61,6 @@ if __name__ == "__main__":
     
     try:
         sender_thread.join()
-        receive_thread.join()
     except KeyboardInterrupt:
         print("exiting by keyboard interrupt")
 
