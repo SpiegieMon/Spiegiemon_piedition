@@ -1,22 +1,21 @@
 #!/usr/bin/python3
 import sx126x
 import os
-from threading import Thread, Lock, Event
+from threading import Thread, Lock
 import pyprctl
 import select
 
 pyprctl.set_name("main")
 
 class Receiver(Thread):
-    def __init__(self, node, lock, event):
+    def __init__(self, node, lock):
         Thread.__init__(self, daemon=True)
         self.setName("receiver")
         self.node = node
         self.lock = lock
-        self.quit_event = event
 
     def run(self):
-        while not self.quit_event.is_set():
+        while True:
             select.select([self.node.ser], [], [self.node.ser])
             with self.lock:
                 self.node.receive()
@@ -24,22 +23,20 @@ class Receiver(Thread):
 
 
 class Sender(Thread):
-    def __init__(self, node, lock, event):
+    def __init__(self, node, lock):
         Thread.__init__(self, daemon=True)
         self.setName("receiver")
         self.node = node
         self.lock = lock
-        self.quit_event = event
 
     def send(self,data):
         with node_lock:
             node.send(data)
     
     def run(self):
-        while not self.quit_event.is_set():
+        while True:
             text = input("input: ")
             if text == 'q':
-                self.quit_event.set()
                 break
             self.send(text)
 
@@ -55,19 +52,17 @@ if __name__ == "__main__":
     node = sx126x.sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
     
     node_lock = Lock()
-    quit_event = Event()
 
-    sender_thread = Sender(node, node_lock, quit_event)
+    sender_thread = Sender(node, node_lock)
     sender_thread.start()
 
-    receive_thread = Receiver(node, node_lock, quit_event)
+    receive_thread = Receiver(node, node_lock)
     receive_thread.start()
     
     try:
         sender_thread.join()
         receive_thread.join()
     except KeyboardInterrupt:
-        quit_event.set()
         print("exiting by keyboard interrupt")
 
 
