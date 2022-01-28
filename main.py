@@ -37,7 +37,7 @@ class Sender(Thread):
         while not self.quit_event.is_set():
             text = input("input: ")
             if text == 'q':
-                break
+                self.quit_event.set()
             self.send(text)
 
 
