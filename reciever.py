@@ -1,4 +1,5 @@
 import select
+import sys
 from threading import Thread, Lock
 
 from sx126x import sx126x
@@ -17,3 +18,4 @@ class Receiver(Thread):
             with self.lock:
                 rssi, node, data = self.node.receive()
                 print(f"\nRecieved '{data.decode()}' from {node}")
+                sys.stdin.write("\n")
