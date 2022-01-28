@@ -17,7 +17,7 @@ class Receiver(Thread):
 
     def run(self):
         while not self.quit_event.is_set():
-            select.select([self.node.ser], [], [self.node.ser], 1)
+            select.select([self.node.ser], [], [self.node.ser])
             with self.lock:
                 self.node.receive()
 
