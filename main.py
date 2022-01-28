@@ -10,7 +10,7 @@ pyprctl.set_name("main")
 class Receiver(Thread):
     def __init__(self, node, lock, event):
         Thread.__init__(self, daemon=True)
-        self.setName(self, "receiver")
+        self.setName("receiver")
         self.node = node
         self.lock = lock
         self.quit_event = event
@@ -26,7 +26,7 @@ class Receiver(Thread):
 class Sender(Thread):
     def __init__(self, node, lock, event):
         Thread.__init__(self, daemon=True)
-        self.setName(self, "receiver")
+        self.setName("receiver")
         self.node = node
         self.lock = lock
         self.quit_event = event
