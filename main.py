@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import sx126x
 import os
-import sys
 from threading import Thread, Lock
 
 
