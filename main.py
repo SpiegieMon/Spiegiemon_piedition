@@ -19,12 +19,11 @@ def send(data):
 
 
 def input_loop():
-    text = ''
     while True:
         text = input()
         if text == 'q':
             break
-        send()
+        send(text)
         
 input_thread = Thread(target=input_loop)
 input_thread.start()
