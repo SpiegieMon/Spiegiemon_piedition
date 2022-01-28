@@ -24,8 +24,8 @@ if __name__ == "__main__":
     data_queue = Queue()
     node_lock = Lock()
 
-    inputer_thread = ConsoleInput(data_queue)
-    inputer_thread.start()
+    console_input_thread = ConsoleInput(data_queue)
+    console_input_thread.start()
 
     sender_thread = Sender(node, node_lock, data_queue)
     sender_thread.start()
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     receive_thread.start()
     
     try:
-        inputer_thread.join()
+        console_input_thread.join()
     except KeyboardInterrupt:
         print("exiting by keyboard interrupt")
 
