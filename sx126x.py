@@ -201,7 +201,7 @@ class sx126x:
 
     def get_settings(self):
         # the pin M1 of lora HAT must be high when enter setting mode and get parameters
-        GPIO.output(M1,GPIO.HIGH)
+        GPIO.output(self.M1,GPIO.HIGH)
         time.sleep(0.1)
 
         # send command to get setting parameters
@@ -238,7 +238,7 @@ class sx126x:
             print("Node address is {0}.",addr_temp)
             print("Air speed is "+ air_speed_dic(air_speed_temp))
             print("Power is " + power_dic(power_temp))
-            GPIO.output(M1,GPIO.LOW)
+            GPIO.output(self.M1,GPIO.LOW)
 
     def send(self,data):
         GPIO.output(self.M1,GPIO.LOW)
@@ -292,11 +292,12 @@ class sx126x:
             time.sleep(0.1)
             re_temp = self.ser.read(self.ser.inWaiting())
         if re_temp[0] == 0xC1 and re_temp[1] == 0x00 and re_temp[2] == 0x02:
+            pass
             # print("the current noise rssi value: -{0}dBm".format(256-re_temp[3]))
-            f=open("g.txt","a")
-            print("Noise RSSI value: -{0}dBm".format(256-re_temp[3]))
-            f.write("Noise RSSI: -{0}dBm ".format(256-re_temp[3]))
-            f.close()
+            #f=open("g.txt","a")
+            #print("Noise RSSI value: -{0}dBm".format(256-re_temp[3]))
+            #f.write("Noise RSSI: -{0}dBm ".format(256-re_temp[3]))
+            #f.close()
         else:
             # pass
             print("Receive RSSI value failed!")
