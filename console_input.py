@@ -2,7 +2,7 @@ from queue import Queue
 from threading import Thread
 
 
-class Inputer(Thread):
+class ConsoleInput(Thread):
     def __init__(self, queue: Queue):
         Thread.__init__(self, daemon=True)
         self.queue = queue

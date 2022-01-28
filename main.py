@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from inputer import Inputer
+from console_input import ConsoleInput
 from reciever import Receiver
 from sender import Sender
 from sx126x import sx126x
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     data_queue = Queue()
     node_lock = Lock()
 
-    inputer_thread = Inputer(data_queue)
+    inputer_thread = ConsoleInput(data_queue)
     inputer_thread.start()
 
     sender_thread = Sender(node, node_lock, data_queue)
