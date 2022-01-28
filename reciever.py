@@ -18,4 +18,3 @@ class Receiver(Thread):
             with self.lock:
                 rssi, node, data = self.node.receive()
                 print(f"\nRecieved '{data.decode()}' from {node}")
-                sys.stdin.write("\n")
