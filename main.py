@@ -27,10 +27,7 @@ def send(data):
 def input_loop():
     pyprctl.set_name("input_loop")
     while True:
-        try:
-            text = input("input: ")
-        except KeyboardInterrupt:
-            break
+        text = input("input: ")
         if text == 'q':
             break
         send(text)
