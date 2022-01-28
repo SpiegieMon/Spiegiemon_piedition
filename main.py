@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sx126x
 import os
+import sys
 from threading import Thread, Lock
 
 def get_serial_tty():
@@ -22,6 +23,7 @@ def input_loop():
     while True:
         text = input()
         if text == 'q':
+            sys.exit(0)
             break
         send(text)
         
