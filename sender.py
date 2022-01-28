@@ -1,7 +1,6 @@
 from queue import Queue
 from threading import Thread, Lock
 
-from main import node_lock, node
 from sx126x import sx126x
 
 
@@ -14,8 +13,8 @@ class Sender(Thread):
         self.queue = queue
 
     def send(self, data: str):
-        with node_lock:
-            node.send(data)
+        with self.lock:
+            self.node.send(data)
 
     def run(self):
         while True:
