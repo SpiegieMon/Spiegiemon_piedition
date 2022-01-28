@@ -3,6 +3,7 @@ import sx126x
 import os
 from threading import Thread, Lock, Event
 import pyprctl
+import select
 
 pyprctl.set_name("main")
 
@@ -15,7 +16,9 @@ class Receiver(Thread):
         self.quit_event = event
 
     def run(self):
-        while not self.quit_event.is_set(): 
+        while not self.quit_event.is_set():
+            select.select([self.node.ser], [self.node.ser], [self.node.ser], 1000)
+            print("Serial changed or timeout")
             with self.lock:
                 self.node.receive()
 
