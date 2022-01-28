@@ -257,11 +257,11 @@ class sx126x:
     """
     Returns a tuple with RSSI, Node ID and binary data
     """
-    def receive(self):
+    def receive(self) -> (int, int, bytes):
         if self.ser.inWaiting() > 0:
             time.sleep(0.5)
             r_buff = self.ser.read(self.ser.inWaiting())
-            return 256 - r_buff[-1:][0], (r_buff[0] << 8) + r_buff[1], r_buff[2:-1]
+            return (256 - r_buff[-1:][0], (r_buff[0] << 8) + r_buff[1], r_buff[2:-1]
 
     def get_channel_rssi(self):
         GPIO.output(self.M1,GPIO.LOW)
