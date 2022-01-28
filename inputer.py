@@ -15,4 +15,6 @@ class Inputer(Thread):
             text = input("input: ")
             if text == 'q':
                 break
+            if len(text) == 0:
+                continue
             self.add_queue(text)
