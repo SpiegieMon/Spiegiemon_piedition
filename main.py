@@ -48,9 +48,10 @@ def get_serial_tty():
         if os.path.exists(device):
             return device
 
-node = sx126x.sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
 
 if __name__ == "__main__":
+    node = sx126x.sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
+    
     node_lock = Lock()
     quit_event = Event()
 
