@@ -269,12 +269,12 @@ class sx126x:
                 # f=open("g.txt","a")
                 self.get_channel_rssi()
                 e = datetime.datetime.now()
-                f=open("g.txt","a")
-                f.write("Packet RSSI: -{0}dBm".format(256-r_buff[-1:][0]))
+                #f=open("g.txt","a")
+                #f.write("Packet RSSI: -{0}dBm".format(256-r_buff[-1:][0]))
                 #f.write("a")
                 # print ("Current date and time = %s" % e)
-                f.write(" Current date and time = %s\n" % e)
-                f.close()
+                #f.write(" Current date and time = %s\n" % e)
+                #f.close()
 
             else:
                 pass
