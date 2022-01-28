@@ -15,20 +15,21 @@ node = bttr_sx126x.sx126x(serial_num = ttydevice,freq=868,addr=100,power=22,rssi
 
 node_lock = Lock()
 
+
 def send(data):
-    node_lock.acquire()
-    node.send(data)
-    node_lock.release()
+    with node_lock:
+        node.send(data)
+
 
 def input_loop():
     text = input()
     send(text)
 
+
 input_thread = Thread(target=input_loop)
 input_thread.start()
 
 while True:
-    node_lock.acquire()
-    node.receive()
-    node_lock.release()
+    with node_lock:
+        node.receive()
 input_thread.exit()
