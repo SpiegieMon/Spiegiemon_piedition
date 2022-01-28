@@ -1,58 +1,14 @@
 #!/usr/bin/python3
-import sx126x
+from inputer import Inputer
+from reciever import Receiver
+from sender import Sender
+from sx126x import sx126x
 import os
-from threading import Thread, Lock
+from threading import Lock
 import pyprctl
-import select
 from queue import Queue
 
 pyprctl.set_name("main")
-
-class Receiver(Thread):
-    def __init__(self, node, lock):
-        Thread.__init__(self, daemon=True)
-        self.setName("receiver")
-        self.node = node
-        self.lock = lock
-
-    def run(self):
-        while True:
-            select.select([self.node.ser], [], [self.node.ser])
-            with self.lock:
-                self.node.receive()
-
-class Inputer(Thread):
-    def __init__(self, queue):
-        Thread.__init__(self, daemon=True)
-        self.queue = queue
-
-    def add_queue(self, message):
-        self.queue.put(message)
-
-    def run(self):
-        while True:
-            text = input("input: ")
-            if text == 'q':
-                break
-            self.add_queue(text)
-
-class Sender(Thread):
-    def __init__(self, node, lock, queue):
-        Thread.__init__(self, daemon=True)
-        self.setName("receiver")
-        self.node = node
-        self.lock = lock
-        self.queue = queue
-
-    def send(self, data):
-        with node_lock:
-            node.send(data)
-    
-    def run(self):
-        while True:
-            message = self.queue.get()
-            self.send(message)
-
 
 
 def get_serial_tty():
@@ -63,7 +19,7 @@ def get_serial_tty():
 
 
 if __name__ == "__main__":
-    node = sx126x.sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
+    node = sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
 
     data_queue = Queue()
     node_lock = Lock()

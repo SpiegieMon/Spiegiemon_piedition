@@ -1,0 +1,18 @@
+from queue import Queue
+from threading import Thread
+
+
+class Inputer(Thread):
+    def __init__(self, queue: Queue):
+        Thread.__init__(self, daemon=True)
+        self.queue = queue
+
+    def add_queue(self, message: str):
+        self.queue.put(message)
+
+    def run(self):
+        while True:
+            text = input("input: ")
+            if text == 'q':
+                break
+            self.add_queue(text)
