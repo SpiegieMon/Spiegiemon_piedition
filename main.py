@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import bttr_sx126x
+import sx126x
 import os
 import sys
 import signal
@@ -11,7 +11,7 @@ if os.path.exists(ttydevices[0]):
     ttydevice = ttydevices[0]
 else:
     ttydevice = ttydevices[1]
-node = bttr_sx126x.sx126x(serial_num = ttydevice,freq=868,addr=100,power=22,rssi=True)
+node = sx126x.sx126x(serial_num = ttydevice, freq=868, addr=100, power=22, rssi=True)
 
 node_lock = Lock()
 
