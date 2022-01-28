@@ -38,6 +38,7 @@ class Sender(Thread):
             text = input("input: ")
             if text == 'q':
                 self.quit_event.set()
+                break
             self.send(text)
 
 
@@ -49,22 +50,17 @@ def get_serial_tty():
 
 node = sx126x.sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
 
-node_lock = Lock()
+if __name__ == "__main__":
+    node_lock = Lock()
+    quit_event = Event()
 
+    sender_thread = Sender(node, node_lock, quit_event)
+    sender_thread.start()
 
-quit_event = Event()
+    receive_thread = Receiver(node, node_lock, quit_event)
+    receive_thread.start()
 
-sender_thread = Sender(node, node_lock, quit_event)
-sender_thread.start()
+    sender_thread.join()
+    receive_thread.join()
 
-receive_thread = Receiver(node, node_lock, quit_event)
-receive_thread.start()
-
-sender_thread.join()
-receive_thread.join()
-
-print("Programm exited gracefully")
-
-## while input_thread.is_alive():
-##     with node_lock:
-##         node.receive()
+    print("Programm exited gracefully")
