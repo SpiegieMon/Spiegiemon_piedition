@@ -254,31 +254,14 @@ class sx126x:
             # self.get_channel_rssi()
         time.sleep(0.1)
 
-    def receive(self):
+    """
+    Returns a tuple with RSSI, Node ID and binary data
+    """
+    def receive(self) -> (int, int, bin):
         if self.ser.inWaiting() > 0:
             time.sleep(0.5)
             r_buff = self.ser.read(self.ser.inWaiting())
-
-            print("receive message from address\033[1;32m %d node \033[0m"%((r_buff[0]<<8)+r_buff[1]),end='\r\n',flush = True)
-            print("message is "+str(r_buff[2:-1]),end='\r\n')
-
-            # print RSSI
-            if self.rssi:
-                # print('\x1b[3A',end='\r')
-                print("the packet rssi value: -{0}dBm".format(256-r_buff[-1:][0]))
-                # f=open("g.txt","a")
-                self.get_channel_rssi()
-                e = datetime.datetime.now()
-                #f=open("g.txt","a")
-                #f.write("Packet RSSI: -{0}dBm".format(256-r_buff[-1:][0]))
-                #f.write("a")
-                # print ("Current date and time = %s" % e)
-                #f.write(" Current date and time = %s\n" % e)
-                #f.close()
-
-            else:
-                pass
-                #print('\x1b[2A',end='\r')
+            return 256 - r_buff[-1:][0], (r_buff[0] << 8) + r_buff[1], r_buff[2:-1]
 
     def get_channel_rssi(self):
         GPIO.output(self.M1,GPIO.LOW)

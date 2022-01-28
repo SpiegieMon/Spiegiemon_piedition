@@ -15,4 +15,5 @@ class Receiver(Thread):
         while True:
             select.select([self.node.ser], [], [self.node.ser])
             with self.lock:
-                self.node.receive()
+                rssi, node, data = self.node.receive()
+                print("Recieved '%s' from %i" % (str(data), node))
