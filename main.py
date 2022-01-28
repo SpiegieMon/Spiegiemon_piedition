@@ -23,7 +23,6 @@ def input_loop():
     while True:
         text = input()
         if text == 'q':
-            sys.exit(0)
             break
         send(text)
         
