@@ -2,9 +2,9 @@
 import sx126x
 import os
 from threading import Thread, Lock
-import prctl
+import pyprctl
 
-prctl.set_name("main")
+pyprctl.set_name("main")
 
 
 def get_serial_tty():
@@ -25,7 +25,7 @@ def send(data):
 
 
 def input_loop():
-    prctl.set_name("input_loop")
+    pyprctl.set_name("input_loop")
     while True:
         text = input()
         if text == 'q':
