@@ -16,4 +16,4 @@ class Receiver(Thread):
             select.select([self.node.ser], [], [self.node.ser])
             with self.lock:
                 rssi, node, data = self.node.receive()
-                print("Recieved '%s' from %i" % (str(data), node))
+                print("\nRecieved '%s' from %i (len: %i)" % (str(data), node, len(data)))
