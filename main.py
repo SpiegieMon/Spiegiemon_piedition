@@ -59,8 +59,13 @@ if __name__ == "__main__":
 
     receive_thread = Receiver(node, node_lock, quit_event)
     receive_thread.start()
+    
+    try:
+        sender_thread.join()
+        receive_thread.join()
+    except KeyboardInterrupt:
+        quit_event.set()
+        print("exiting by keyboard interrupt")
 
-    sender_thread.join()
-    receive_thread.join()
 
     print("Programm exited gracefully")
