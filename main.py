@@ -30,7 +30,6 @@ def input_loop():
 input_thread = Thread(target=input_loop)
 input_thread.start()
 
-while True:
+while input_thread.is_alive():
     with node_lock:
         node.receive()
-input_thread.exit()
