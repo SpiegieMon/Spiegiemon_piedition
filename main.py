@@ -6,6 +6,18 @@ import pyprctl
 
 pyprctl.set_name("main")
 
+class Receiver(Thread):
+    def __init__(self, node, lock):
+        Thread.__init__(self)
+        self.running = True
+        self.node = node
+        self.lock = lock
+
+    def run(self):
+        while self.running: 
+            with self.lock:
+                self.node.receive()
+
 
 def get_serial_tty():
     choices = ["/dev/ttyS0", "/dev/ttyAMA0"]
@@ -36,6 +48,12 @@ def input_loop():
 input_thread = Thread(target=input_loop)
 input_thread.start()
 
-while input_thread.is_alive():
-    with node_lock:
-        node.receive()
+receive_thread = Receiver(node, node_lock)
+receive_thread.start()
+receive_thread.join()
+
+print("Programm exited gracefully")
+
+## while input_thread.is_alive():
+##     with node_lock:
+##         node.receive()
