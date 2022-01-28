@@ -1,5 +1,4 @@
 import select
-import sys
 from threading import Thread, Lock
 
 from sx126x import sx126x
