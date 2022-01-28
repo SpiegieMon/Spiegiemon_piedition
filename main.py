@@ -19,9 +19,7 @@ def send(data):
 
 
 def input_loop():
-    text = ''
-    while text != 'q':
-        text = input()
+    while text := input() != 'q':
         send(text)
 
 
