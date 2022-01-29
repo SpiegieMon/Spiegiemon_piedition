@@ -27,21 +27,22 @@ class Bluetooth_input(Thread):
         bluetooth.advertise_service(self.server, "SampleServer", service_id=self.service_id,
                                     service_classes=[self.service_id, bluetooth.SERIAL_PORT_CLASS],
                                     profiles=[bluetooth.SERIAL_PORT_PROFILE])
-        print("Waiting for conn on rfcomm chan ", self.port)
+        print("Waiting for conn on rfcomm chan", self.port)
         while True:
             client_sock, client_info = self.server.accept()
-            print("Accepted connection from ", client_info)
+            print("Accepted connection from", client_info)
             try:
                 while True:
                     data = client_sock.recv(1024)
                     if not data:
                         break
-                    print("Recieved: ", data)
+                    print("Recieved:", data)
+                    client_sock.send(b"ACK:" + data)
             except OSError:
                 pass
             print("Bluetooth client disconnected")
             client_sock.close()
-            print("Waiting for new connection on rfcomm chan ", self.port)
+            print("Waiting for new connection on rfcomm chan", self.port)
 
 
 def get_serial_tty():
