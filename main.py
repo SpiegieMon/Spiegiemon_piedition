@@ -50,7 +50,6 @@ class Bluetooth_input(Thread):
                 pass
             print("Bluetooth client disconnected")
             client_sock.close()
-            print("Waiting for bluetooth sender thread to exit")
             bluetooth_sender.stop_running = True
             bluetooth_sender.join(timeout=10)
             if bluetooth_sender.is_alive():
