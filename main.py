@@ -7,6 +7,7 @@ import os
 from threading import Lock, Thread
 import pyprctl
 from queue import Queue
+import bluetooth
 
 pyprctl.set_name("main")
 
@@ -16,11 +17,31 @@ class Bluetooth_input(Thread):
         Thread.__init__(self, daemon=True)
         self.lock = lock
         self.input_queue = input_queue
+        self.server = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        self.server.bind(("", bluetooth.PORT_ANY))
+        self.server.listen(1)
+        self.port = self.server.getsockname()[1]
+        self.service_id = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
 
     def run(self):
+        bluetooth.advertise_service(self.server, "SampleServer", service_id=self.service_id,
+                                    service_classes=[self.service_id, bluetooth.SERIAL_PORT_CLASS],
+                                    profiles=[bluetooth.SERIAL_PORT_PROFILE])
+        print("Waiting for conn on rfcomm chan ", self.port)
         while True:
-            pass
-
+            client_sock, client_info = self.server.accept()
+            print("Accepted connection from ", client_info)
+            try:
+                while True:
+                    data = client_sock.recv(1024)
+                    if not data:
+                        break
+                    print("Recieved: ", data)
+            except OSError:
+                pass
+            print("Bluetooth client disconnected")
+            client_sock.close()
+            print("Waiting for new connection on rfcomm chan ", self.port)
 
 
 def get_serial_tty():
@@ -48,11 +69,10 @@ if __name__ == "__main__":
 
     receive_thread = Receiver(node, node_lock)
     receive_thread.start()
-    
+
     try:
         console_input_thread.join()
     except KeyboardInterrupt:
         print("exiting by keyboard interrupt")
-
 
     print("Programm exited gracefully")
