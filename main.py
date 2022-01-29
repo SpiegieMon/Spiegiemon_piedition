@@ -40,7 +40,7 @@ class Bluetooth_input(Thread):
                 for event in self.inotify_adapter.event_gen(yield_nones=False):
                     (_, type_names, path, filename) = event
                     if filename == self.rfcomm:
-                        print(f"Event: {event}, File: {filename}")
+                        break
 
 
 
