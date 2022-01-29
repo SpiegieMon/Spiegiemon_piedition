@@ -1,3 +1,4 @@
+import time
 from queue import Queue
 from threading import Thread, Lock
 
@@ -20,3 +21,4 @@ class LoraSender(Thread):
         while True:
             message = self.queue.get()
             self.send(message)
+            time.sleep(1)
