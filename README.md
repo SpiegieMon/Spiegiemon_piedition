@@ -2,7 +2,7 @@
 
 Chat app for LoRa communication written in python with bluetooth communication or over console
 
-Uses LoRa module **sx1262**
+Uses Raspberry Pi with LoRa module **sx1262**
 
 # Prerequisites
 
@@ -57,3 +57,9 @@ WantedBy=multi-user.target
 - [x] console input 
 - [ ] LoRa Repeater to increase range (first step of LoRa-Network)
 - [ ] ACK between lora modules so no Messages get lost
+
+# Tested with
+
+Raspberry Pi 2 Model B Rev 1.2 using Raspbian 11
+- with bluetooth dongle
+Raspberry Pi 4 Model B Rev 1.2 using Raspbian 10
