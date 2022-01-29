@@ -23,6 +23,7 @@ class Bluetooth_input(Thread):
             ser = Serial('/dev/rfcomm0')
             while ser.isOpen():
                 data = ser.readline()
+                data = data.decode('utf-8')
                 print(data)
                 self.input_queue.put(data)
 
