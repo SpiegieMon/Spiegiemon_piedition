@@ -243,8 +243,8 @@ class sx126x:
 
             print("Frequence is {0}.125MHz.", fre_temp)
             print("Node address is {0}.", addr_temp)
-            print("Air speed is " + air_speed_dic(air_speed_temp))
-            print("Power is " + power_dic(power_temp))
+            print("Air speed is " + air_speed_dic[air_speed_temp])
+            print("Power is " + power_dic[power_temp])
             GPIO.output(self.M1, GPIO.LOW)
 
     def send(self, data):
