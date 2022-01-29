@@ -36,6 +36,7 @@ class BluetoothQueueAdapter(Thread):
                         break
                     data_str = data.decode("UTF-8").strip("\n")
                     print("Recieved:", data_str)
+                    client_sock.send("Received: " + data_str + "\n")
                     self.input_queue.put(data_str)
             except OSError:
                 pass
@@ -61,7 +62,7 @@ class BluetoothSender(Thread):
             try:
                 data = self.lora_input.get(timeout=2)
                 try:
-                    self.client_socket.send(data)
+                    self.client_socket.send(data + "\n")
                 except bluetooth.btcommon.BluetoothError:
                     break
             except queue.Empty:
