@@ -63,7 +63,7 @@ class BluetoothSender(Thread):
 
     def run(self):
         while True:
-            data = self.lora_input.get()
+            data = self.lora_input.get(timeout=2)
             try:
                 self.client_socket.send(data)
             except bluetooth.btcommon.BluetoothError:
