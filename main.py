@@ -40,7 +40,7 @@ if __name__ == "__main__":
     receive_thread = LoraReceiver(node, node_lock, bluetooth_send_queue)
     receive_thread.start()
 
-    if sys.argv[1] == "-i":
+    if len(sys.argv) > 1 and sys.argv[1] == "-i":
         console_input_thread = ConsoleInput(lora_send_queue)
         console_input_thread.start()
 
