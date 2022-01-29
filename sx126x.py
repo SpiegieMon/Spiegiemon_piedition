@@ -1,4 +1,3 @@
-# This file is used for LoRa and Raspberry Pi4B/Pi Zero
 # This is the main class file that is often used for LoRa parameters settings
 
 import RPi.GPIO as GPIO
@@ -67,7 +66,7 @@ class sx126x:
         GPIO.output(self.M0,GPIO.LOW)
         GPIO.output(self.M1,GPIO.HIGH)
 
-        # The hardware UART of Pi3B+,Pi4B is /dev/ttyS0
+        # The hardware UART of Pi3B+,Pi4B is /dev/ttyS0 for Pi2B it is /dev/ttyAMA0
         self.ser = serial.Serial(serial_num,9600)
         self.ser.flushInput()
         self.set(freq,addr,power,rssi)
