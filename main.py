@@ -9,18 +9,18 @@ from threading import Lock
 
 import pyprctl
 
+import sx126x
 from bluetooth_queue_adapter import BluetoothQueueAdapter
 from console_input import ConsoleInput
 from lora_receiver import LoraReceiver
 from lora_sender import LoraSender
-from sx126x import sx126x
-import sx126x
+from sx126x import Sx126x
 
 pyprctl.set_name("main")
 
 
 if __name__ == "__main__":
-    node = sx126x(serial_num=sx126x.get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
+    node = Sx126x(serial_num=sx126x.get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
 
     lora_send_queue = Queue()
     bluetooth_send_queue = Queue()

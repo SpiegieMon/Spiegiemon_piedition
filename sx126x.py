@@ -22,7 +22,7 @@ def get_serial_tty():
             return device
 
 
-class sx126x:
+class Sx126x:
     M0 = 22
     M1 = 27
     # if the header is 0xC0, then the LoRa register settings dont lost when it poweroff, and 0xC2 will be lost.
