@@ -43,9 +43,10 @@ if __name__ == "__main__":
     node = sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
 
     data_queue = Queue()
+    output_queue = Queue()
     node_lock = Lock()
 
-    bluetooth_input_thread = Bluetooth_input()
+    bluetooth_input_thread = Bluetooth_input(node_lock, data_queue, output_queue)
     bluetooth_input_thread.start()
 
     console_input_thread = ConsoleInput(data_queue)
