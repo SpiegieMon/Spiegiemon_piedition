@@ -1,0 +1,7 @@
+future==0.18.2
+iso8601==1.0.2
+PyBluez==0.22
+pyprctl==0.1.3
+PyYAML==6.0
+serial==0.0.97
+RPi.GPIO==0.7.0
