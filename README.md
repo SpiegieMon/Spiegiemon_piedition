@@ -1,12 +1,12 @@
-# Spiegiemon_piedition
+# Spiegiemon_PiEdition
 
-Chatapp for LoRa communication written in python with bluetooth communication or over console
+Chat app for LoRa communication written in python with bluetooth communication or over console
 
-used LoRa module **sx1262**
+Uses LoRa module **sx1262**
 
-# prerequisits
+# Prerequisites
 
-in file /etc/bluetooth/main.conf
+In file /etc/bluetooth/main.conf
 
 ```txt
 DiscoverableTimeout = 0
@@ -14,9 +14,9 @@ PairableTimeout = 0
 ```
 
 
-in file /etc/systemd/system/dbus-org.bluez.service
+In file /etc/systemd/system/dbus-org.bluez.service
 
-overwrite 
+Overwrite 
 ```txt
 ExecStart=/usr/lib/bluetooth/bluetoothd
 ```
@@ -35,7 +35,7 @@ sudo systemctl restart bluetooth.service
 
 # Features
 
-- [x] threadded Bluetooth communication to modul
+- [x] threaded Bluetooth communication to module
 - [x] threaded LoRa communication
 - [x] queue based sending of messages so everything send by bluetooth gets send by LoRa-Module
 - [x] console input 
