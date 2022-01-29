@@ -67,6 +67,7 @@ WantedBy=multi-user.target
 - [ ] LoRa Repeater to increase range (first step of LoRa-Network)
 - [ ] add ansible setupscript
 - [ ] pack to dpkg package
+- [ ] force LoRa airtime restrictions
 
 # Tested with
 
