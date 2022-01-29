@@ -11,7 +11,7 @@ from serial import Serial
 import select
 import inotify.adapters
 import inotify.constants
-import time.sleep
+import time
 
 pyprctl.set_name("main")
 
