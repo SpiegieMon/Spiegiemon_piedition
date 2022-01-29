@@ -73,5 +73,8 @@ WantedBy=multi-user.target
 
 - Raspberry Pi 2 Model B Rev 1.2 using Raspbian 11
 (with bluetooth dongle)
-
 - Raspberry Pi 4 Model B Rev 1.2 using Raspbian 10
+
+# Contrubution
+
+If you want to contrubute to this Project, you are welcome to fork this repository and submit a pull request.

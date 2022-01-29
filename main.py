@@ -10,7 +10,7 @@ import pyprctl
 
 from bluetooth_queue_adapter import BluetoothQueueAdapter
 from console_input import ConsoleInput
-from lora_reciever import LoraReceiver
+from lora_receiver import LoraReceiver
 from lora_sender import LoraSender
 from sx126x import sx126x
 
