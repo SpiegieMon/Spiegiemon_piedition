@@ -34,6 +34,7 @@ class Bluetooth_input(Thread):
             client_sock, client_info = self.server.accept()
             print("Accepted connection from", client_info)
             bluetooth_sender = BluetoothSender(client_sock, self.output_queue)
+            bluetooth_sender.start()
             try:
                 while True:
                     data = client_sock.recv(1024)
