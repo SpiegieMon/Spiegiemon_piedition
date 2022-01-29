@@ -45,4 +45,5 @@ sudo systemctl restart bluetooth.service
 # Tested with
 
 Raspberry Pi 2 Model B Rev 1.2 using Raspbian 11
+- with bluetooth dongle
 Raspberry Pi 4 Model B Rev 1.2 using Raspbian 10
