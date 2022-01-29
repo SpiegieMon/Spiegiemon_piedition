@@ -29,16 +29,16 @@ class Bluetooth_input(Thread):
     def run(self):
         while True:
             if os.path.exists('/dev/rfcomm0'):
-                try:
-                    ser = Serial('/dev/rfcomm0')
-                    while ser.isOpen():
+                ser = Serial('/dev/rfcomm0')
+                while ser.isOpen():
+                    try:
                         data = ser.readline()
                         data = data[:-1].decode('utf-8')
                         print(data)
                         self.input_queue.put(data)
-                except SerialException:
-                    break
-                    print("BTdevice disconnected")
+                    except SerialException:
+                        print("BTdevice disconnected")
+                        break
 
             else:
                 print("listening for incoming connection")
