@@ -3,8 +3,13 @@
 import RPi.GPIO as GPIO
 import serial
 import time
-import datetime
+import os
 
+def get_serial_tty():
+    choices = ["/dev/ttyS0", "/dev/ttyAMA0"]
+    for device in choices:
+        if os.path.exists(device):
+            return device
 class sx126x:
 
     M0 = 22

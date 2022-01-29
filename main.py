@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import os
 import sys
 import time
 from queue import Queue
@@ -13,19 +12,13 @@ from console_input import ConsoleInput
 from lora_receiver import LoraReceiver
 from lora_sender import LoraSender
 from sx126x import sx126x
+import sx126x
 
 pyprctl.set_name("main")
 
 
-def get_serial_tty():
-    choices = ["/dev/ttyS0", "/dev/ttyAMA0"]
-    for device in choices:
-        if os.path.exists(device):
-            return device
-
-
 if __name__ == "__main__":
-    node = sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
+    node = sx126x(serial_num=sx126x.get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
 
     lora_send_queue = Queue()
     bluetooth_send_queue = Queue()
