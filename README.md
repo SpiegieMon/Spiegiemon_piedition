@@ -33,12 +33,11 @@ sudo systemctl daemon-reload
 sudo systemctl restart bluetooth.service
 ```
 
-
 # Features
 
-[x] threadded Bluetooth communication to modul
-[x] threaded LoRa communication
-[x] queue based sending of messages so everything send by bluetooth gets send by LoRa-Module
-[x] console input 
-[ ] LoRa Repeater to increase range (first step of LoRa-Network)
-[ ] ACK between lora modules so no Messages get lost
+- [x] threadded Bluetooth communication to modul
+- [x] threaded LoRa communication
+- [x] queue based sending of messages so everything send by bluetooth gets send by LoRa-Module
+- [x] console input 
+- [ ] LoRa Repeater to increase range (first step of LoRa-Network)
+- [ ] ACK between lora modules so no Messages get lost
