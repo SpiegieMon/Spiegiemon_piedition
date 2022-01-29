@@ -37,7 +37,7 @@ class Bluetooth_input(Thread):
                     self.input_queue.put(data)
 
             else:
-                for event in self.inotify_adapter(yield_nones=False):
+                for event in self.inotify_adapter.event_gen(yield_nones=False):
                     (_, type_names, path, filename) = event
                     if filename == self.rfcomm:
                         print(f"Event: {event}, File: {filename}")
