@@ -11,6 +11,7 @@ from serial import Serial
 import select
 import inotify.adapters
 import inotify.constants
+import time.sleep
 
 pyprctl.set_name("main")
 
@@ -40,6 +41,7 @@ class Bluetooth_input(Thread):
                 for event in self.inotify_adapter.event_gen(yield_nones=False):
                     (_, type_names, path, filename) = event
                     if filename == self.rfcomm:
+                        time.sleep(1)
                         break
 
 
