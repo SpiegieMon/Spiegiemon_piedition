@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+import queue
+import sys
+
 from bluetooth import BluetoothSocket
 
 from console_input import ConsoleInput
@@ -48,9 +51,10 @@ class Bluetooth_input(Thread):
             print("Bluetooth client disconnected")
             client_sock.close()
             print("Waiting for bluetooth sender thread to exit")
+            bluetooth_sender.stop_running = True
             bluetooth_sender.join(timeout=10)
             if bluetooth_sender.is_alive():
-                print("Timed out waiting for bluetooth sender thread")
+                print("Timed out waiting for bluetooth sender thread", file=sys.stderr)
             print("Waiting for new connection on rfcomm chan", self.port)
 
 
@@ -62,12 +66,15 @@ class BluetoothSender(Thread):
         self.lora_input = lora_input
 
     def run(self):
-        while True:
-            data = self.lora_input.get(timeout=2)
+        while not self.stop_running:
             try:
-                self.client_socket.send(data)
-            except bluetooth.btcommon.BluetoothError:
-                break
+                data = self.lora_input.get(timeout=2)
+                try:
+                    self.client_socket.send(data)
+                except bluetooth.btcommon.BluetoothError:
+                    break
+            except queue.Empty:
+                pass
 
 
 def get_serial_tty():
