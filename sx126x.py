@@ -141,7 +141,6 @@ class sx126x:
 
         for i in range(2):
             self.ser.write(bytes(self.cfg_reg))
-            r_buff = 0
             time.sleep(0.2)
             if self.ser.inWaiting() > 0:
                 time.sleep(0.1)
@@ -176,7 +175,7 @@ class sx126x:
         GPIO.output(self.M1, GPIO.LOW)
         time.sleep(0.1)
 
-    def air_speed_cal(self, airSpeed):
+    def air_speed_cal(self, air_speed):
         air_speed_c = {
             1200: self.SX126X_AIR_SPEED_1200bps,
             2400: self.SX126X_AIR_SPEED_2400bps,
@@ -186,7 +185,7 @@ class sx126x:
             38400: self.SX126X_AIR_SPEED_38400bps,
             62500: self.SX126X_AIR_SPEED_62500bps
         }
-        return air_speed_c.get(airSpeed, None)
+        return air_speed_c.get(air_speed, None)
 
     def power_cal(self, power):
         power_c = {
@@ -197,14 +196,14 @@ class sx126x:
         }
         return power_c.get(power, None)
 
-    def buffer_size_cal(self, bufferSize):
+    def buffer_size_cal(self, buffer_size):
         buffer_size_c = {
             240: self.SX126X_PACKAGE_SIZE_240_BYTE,
             128: self.SX126X_PACKAGE_SIZE_128_BYTE,
             64: self.SX126X_PACKAGE_SIZE_64_BYTE,
             32: self.SX126X_PACKAGE_SIZE_32_BYTE
         }
-        return buffer_size_c.get(bufferSize, None)
+        return buffer_size_c.get(buffer_size, None)
 
     def get_settings(self):
         # the pin M1 of lora HAT must be high when enter setting mode and get parameters
