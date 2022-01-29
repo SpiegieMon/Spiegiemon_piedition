@@ -35,6 +35,8 @@ sudo systemctl daemon-reload
 sudo systemctl restart bluetooth.service
 ```
 
+to make Raspberry pi Bluetooth discoverable
+
 ## Systemd unit-file
 ```ini
 [Unit]
@@ -60,6 +62,7 @@ WantedBy=multi-user.target
 - [x] console input 
 - [x] create systemd unit-file
 - [x] create -i flag for interactive mode (console input)
+- [ ] Kontroll-LED 
 - [ ] autosend sendername over lora
 - [ ] ACK between lora modules so no Message gets lost
 - [ ] add configfile
