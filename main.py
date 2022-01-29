@@ -62,7 +62,7 @@ class BluetoothSender(Thread):
         self.lora_input = lora_input
 
     def run(self):
-        print(vars(self.client_socket))
+        print(dir(self.client_socket))
         while self.client_socket.connected:
             data = self.lora_input.get()
             try:
