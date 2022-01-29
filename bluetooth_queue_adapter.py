@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# This file is part of SpiegieMon. https://github.com/Spiegie/Spiegiemon_piedition/
+# (C) 2022 Michael Spiegelhalter <michael.spi@web.de>
 import queue
 import sys
 from queue import Queue

@@ -1,0 +1,15 @@
+name: 'check-license'
+on:
+  pull_request:
+  push:
+
+jobs:
+  check-license:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: viperproject/check-license-header@v1
+        with:
+          path: ./
+          config: ./.github/license-check/license-config.json
+          strict: false
