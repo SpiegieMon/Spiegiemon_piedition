@@ -1,13 +1,14 @@
 import select
-from threading import Thread, Lock
 from queue import Queue
+from threading import Thread, Lock
+
 from sx126x import sx126x
 
 
-class Receiver(Thread):
+class LoraReceiver(Thread):
     def __init__(self, node: sx126x, lock: Lock, queue: Queue):
         Thread.__init__(self, daemon=True)
-        self.setName("receiver")
+        self.setName("LoraReceiver")
         self.node = node
         self.lock = lock
         self.output_queue = queue
