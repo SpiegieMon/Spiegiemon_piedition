@@ -42,11 +42,12 @@ Description=SpiegieMon
 Type=simple
 WorkingDirectory=/home/pi/git/Spiegiemon_piedition
 ExecStart=/home/pi/git/Spiegiemon_piedition/main.py
- 
+Environment="PYTHONUNBUFFERED=1"
+After=bluetooth
+Requires=bluetooth
 
 [Install]
 WantedBy=multi-user.target
-
 ```
 
 # Features
