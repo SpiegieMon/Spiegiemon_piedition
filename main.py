@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+from bluetooth import BluetoothSocket
+
 from console_input import ConsoleInput
 from reciever import Receiver
 from sender import Sender
@@ -13,12 +15,11 @@ pyprctl.set_name("main")
 
 
 class Bluetooth_input(Thread):
-    def __init__(self, lock: Lock, input_queue: Queue, output_queue: Queue):
+    def __init__(self, input_queue: Queue, output_queue: Queue):
         Thread.__init__(self, daemon=True)
         self.output_queue = output_queue
-        self.lock = lock
         self.input_queue = input_queue
-        self.server = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        self.server = BluetoothSocket(bluetooth.RFCOMM)
         self.server.bind(("", bluetooth.PORT_ANY))
         self.server.listen(1)
         self.port = self.server.getsockname()[1]
@@ -32,18 +33,43 @@ class Bluetooth_input(Thread):
         while True:
             client_sock, client_info = self.server.accept()
             print("Accepted connection from", client_info)
+            bluetooth_sender = BluetoothSender(client_sock, self.output_queue)
             try:
                 while True:
                     data = client_sock.recv(1024)
                     if not data:
                         break
-                    print("Recieved:", data)
-                    self.input_queue.put(data.decode("UTF-8"))
+                    data_str = data.decode("UTF-8").strip("\n")
+                    print("Recieved:", data_str)
+                    self.input_queue.put(data_str)
             except OSError:
                 pass
             print("Bluetooth client disconnected")
             client_sock.close()
+            print("Waiting for bluetooth sender thread to exit")
+            bluetooth_sender.join(timeout=10)
+            if bluetooth_sender.is_alive():
+                print("Timed out waiting for bluetooth sender thread")
             print("Waiting for new connection on rfcomm chan", self.port)
+
+
+class BluetoothSender(Thread):
+    def __init(self, client_socket: BluetoothSocket, lora_input: Queue):
+        Thread.__init__(self, daemon=True)
+        self.client_socket = client_socket
+        self.stop_running = False
+        self.lora_input = lora_input
+
+    def run(self):
+        while self.client_socket.connected:
+            data = self.lora_input.get()
+            try:
+                self.client_socket.send(data)
+            except OSError as e:
+                if self.client_socket.connected:
+                    print("Unexpected error:")
+                    print(e)
+                break
 
 
 def get_serial_tty():
@@ -60,7 +86,7 @@ if __name__ == "__main__":
     output_queue = Queue()
     node_lock = Lock()
 
-    bluetooth_input_thread = Bluetooth_input(node_lock, data_queue, output_queue)
+    bluetooth_input_thread = Bluetooth_input(data_queue, output_queue)
     bluetooth_input_thread.start()
 
     console_input_thread = ConsoleInput(data_queue)
@@ -69,7 +95,7 @@ if __name__ == "__main__":
     sender_thread = Sender(node, node_lock, data_queue)
     sender_thread.start()
 
-    receive_thread = Receiver(node, node_lock)
+    receive_thread = Receiver(node, node_lock, output_queue)
     receive_thread.start()
 
     try:
