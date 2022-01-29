@@ -32,12 +32,12 @@ class Bluetooth_input(Thread):
                 try:
                     ser = Serial('/dev/rfcomm0')
                     while ser.isOpen():
-                        select.select([ser], [], [ser])
                         data = ser.readline()
                         data = data[:-1].decode('utf-8')
                         print(data)
                         self.input_queue.put(data)
                 except SerialException:
+                    break
                     print("BTdevice disconnected")
 
             else:
