@@ -1,6 +1,6 @@
 import select
 from threading import Thread, Lock
-form queue import Queue
+from queue import Queue
 from sx126x import sx126x
 
 
