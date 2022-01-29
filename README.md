@@ -8,8 +8,10 @@ used Lorawan module **sx1262**
 
 in file /etc/bluetooth/main.conf
 
+```txt
 DiscoverableTimeout = 0
 PairableTimeout = 0
+```
 
 
 in file /etc/systemd/system/dbus-org.bluez.service
