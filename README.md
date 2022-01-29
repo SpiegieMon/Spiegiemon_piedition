@@ -77,4 +77,4 @@ WantedBy=multi-user.target
 
 # Contrubution
 
-If you want to contrubute to this Project, you are welcome to fork this repository and submit a pull request.
+If you want to contribute to this Project, you are welcome to fork this repository and submit a pull request.
