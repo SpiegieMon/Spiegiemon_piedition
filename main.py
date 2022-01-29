@@ -4,11 +4,32 @@ from reciever import Receiver
 from sender import Sender
 from sx126x import sx126x
 import os
-from threading import Lock
+from threading import Lock, Thread
 import pyprctl
 from queue import Queue
+from serial import Serial
 
 pyprctl.set_name("main")
+
+
+class Bluetooth_input(Thread):
+    def __init__(self, lock: Lock, input_queue: Queue, output_queue: Queue):
+        Thread.__init__(self, daemon=True)
+        self.lock = lock
+        self.input_queue = input_queue
+
+    def run(self):
+        if os.path.exists('/dev/rfcomm0'):
+            ser = Serial('/dev/rfcomm0')
+            while ser.isOpen():
+                data = ser.readline()
+                print(data)
+                self.input_queue.put(data)
+
+        else:
+            pass # watch for /dev/rfcomm0
+
+
 
 
 def get_serial_tty():
@@ -23,6 +44,9 @@ if __name__ == "__main__":
 
     data_queue = Queue()
     node_lock = Lock()
+
+    bluetooth_input_thread = Bluetooth_input()
+    bluetooth_input_thread.start()
 
     console_input_thread = ConsoleInput(data_queue)
     console_input_thread.start()
