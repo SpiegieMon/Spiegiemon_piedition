@@ -1,8 +1,8 @@
 # Spiegiemon_piedition
 
-Chatapp for lorawancommunication written in python with bluetooth communication or over console
+Chatapp for LoRa communication written in python with bluetooth communication or over console
 
-used Lorawan module **sx1262**
+used LoRa module **sx1262**
 
 # prerequisits
 
