@@ -15,6 +15,7 @@ pyprctl.set_name("main")
 class Bluetooth_input(Thread):
     def __init__(self, lock: Lock, input_queue: Queue, output_queue: Queue):
         Thread.__init__(self, daemon=True)
+        self.output_queue = output_queue
         self.lock = lock
         self.input_queue = input_queue
         self.server = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
@@ -37,7 +38,7 @@ class Bluetooth_input(Thread):
                     if not data:
                         break
                     print("Recieved:", data)
-                    client_sock.send(b"ACK:" + data)
+                    self.input_queue.put(data.decode("UTF-8"))
             except OSError:
                 pass
             print("Bluetooth client disconnected")
