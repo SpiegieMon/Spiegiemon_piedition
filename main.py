@@ -1,79 +1,18 @@
 #!/usr/bin/python3
-import queue
-import sys
 
-from bluetooth import BluetoothSocket
-
-from console_input import ConsoleInput
-from reciever import Receiver
-from sender import Sender
-from sx126x import sx126x
 import os
-from threading import Lock, Thread
-import pyprctl
 from queue import Queue
-import bluetooth
+from threading import Lock
+
+import pyprctl
+
+from bluetooth_queue_adapter import BluetoothQueueAdapter
+from console_input import ConsoleInput
+from lora_reciever import LoraReceiver
+from lora_sender import LoraSender
+from sx126x import sx126x
 
 pyprctl.set_name("main")
-
-
-class Bluetooth_input(Thread):
-    def __init__(self, input_queue: Queue, output_queue: Queue):
-        Thread.__init__(self, daemon=True)
-        self.output_queue = output_queue
-        self.input_queue = input_queue
-        self.server = BluetoothSocket(bluetooth.RFCOMM)
-        self.server.bind(("", bluetooth.PORT_ANY))
-        self.server.listen(1)
-        self.port = self.server.getsockname()[1]
-        self.service_id = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
-
-    def run(self):
-        bluetooth.advertise_service(self.server, "SampleServer", service_id=self.service_id,
-                                    service_classes=[self.service_id, bluetooth.SERIAL_PORT_CLASS],
-                                    profiles=[bluetooth.SERIAL_PORT_PROFILE])
-        print("Waiting for conn on rfcomm chan", self.port)
-        while True:
-            client_sock, client_info = self.server.accept()
-            print("Accepted connection from", client_info)
-            bluetooth_sender = BluetoothSender(client_sock, self.output_queue)
-            bluetooth_sender.start()
-            try:
-                while True:
-                    data = client_sock.recv(1024)
-                    if not data:
-                        break
-                    data_str = data.decode("UTF-8").strip("\n")
-                    print("Recieved:", data_str)
-                    self.input_queue.put(data_str)
-            except OSError:
-                pass
-            print("Bluetooth client disconnected")
-            client_sock.close()
-            bluetooth_sender.stop_running = True
-            bluetooth_sender.join(timeout=10)
-            if bluetooth_sender.is_alive():
-                print("Timed out waiting for bluetooth sender thread", file=sys.stderr)
-            print("Waiting for new connection on rfcomm chan", self.port)
-
-
-class BluetoothSender(Thread):
-    def __init__(self, client_socket: BluetoothSocket, lora_input: Queue):
-        Thread.__init__(self, daemon=True)
-        self.client_socket = client_socket
-        self.stop_running = False
-        self.lora_input = lora_input
-
-    def run(self):
-        while not self.stop_running:
-            try:
-                data = self.lora_input.get(timeout=2)
-                try:
-                    self.client_socket.send(data)
-                except bluetooth.btcommon.BluetoothError:
-                    break
-            except queue.Empty:
-                pass
 
 
 def get_serial_tty():
@@ -86,20 +25,20 @@ def get_serial_tty():
 if __name__ == "__main__":
     node = sx126x(serial_num=get_serial_tty(), freq=868, addr=100, power=22, rssi=True)
 
-    data_queue = Queue()
-    output_queue = Queue()
+    lora_send_queue = Queue()
+    bluetooth_send_queue = Queue()
     node_lock = Lock()
 
-    bluetooth_input_thread = Bluetooth_input(data_queue, output_queue)
-    bluetooth_input_thread.start()
+    bluetooth_thread = BluetoothQueueAdapter(lora_send_queue, bluetooth_send_queue)
+    bluetooth_thread.start()
 
-    console_input_thread = ConsoleInput(data_queue)
+    console_input_thread = ConsoleInput(lora_send_queue)
     console_input_thread.start()
 
-    sender_thread = Sender(node, node_lock, data_queue)
+    sender_thread = LoraSender(node, node_lock, lora_send_queue)
     sender_thread.start()
 
-    receive_thread = Receiver(node, node_lock, output_queue)
+    receive_thread = LoraReceiver(node, node_lock, bluetooth_send_queue)
     receive_thread.start()
 
     try:
