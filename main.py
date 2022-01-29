@@ -38,6 +38,7 @@ class Bluetooth_input(Thread):
                         print(data)
                         self.input_queue.put(data)
                 except SerialException:
+                    ser.close()
                     print("BTdevice disconnected")
 
             else:
@@ -46,6 +47,7 @@ class Bluetooth_input(Thread):
                     (_, type_names, path, filename) = event
                     if filename == self.rfcomm:
                         time.sleep(1)
+                        print("device connected")
                         break
 
 
