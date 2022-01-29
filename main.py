@@ -36,9 +36,11 @@ class Bluetooth_input(Thread):
                         data = data[:-1].decode('utf-8')
                         print(data)
                         self.input_queue.put(data)
-                except SerialException:
+                except SerialException as e:
                     print("BTdevice disconnected")
                     ser.__del__()
+                    print(e)
+                    time.sleep(5)
 
             else:
                 print("listening for incoming connection")
