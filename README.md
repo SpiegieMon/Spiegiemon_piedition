@@ -17,11 +17,11 @@ PairableTimeout = 0
 In file /etc/systemd/system/dbus-org.bluez.service
 
 Overwrite 
-```txt
+```ini
 ExecStart=/usr/lib/bluetooth/bluetoothd
 ```
 with
-```txt
+```ini
 ExecStart=/usr/lib/bluetooth/bluetoothd -C
 ExecStartPost=/usr/bin/sdptool add SP
 ```
@@ -31,6 +31,22 @@ then restart services with
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl restart bluetooth.service
+```
+
+## Systemd unit-file
+```ini
+[Unit]
+Description=SpiegieMon
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/git/Spiegiemon_piedition
+ExecStart=/home/pi/git/Spiegiemon_piedition/main.py
+ 
+
+[Install]
+WantedBy=multi-user.target
+
 ```
 
 # Features

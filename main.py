@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import os
+import sys
+import time
 from queue import Queue
 from threading import Lock
 
@@ -32,18 +34,22 @@ if __name__ == "__main__":
     bluetooth_thread = BluetoothQueueAdapter(lora_send_queue, bluetooth_send_queue)
     bluetooth_thread.start()
 
-    console_input_thread = ConsoleInput(lora_send_queue)
-    console_input_thread.start()
-
     sender_thread = LoraSender(node, node_lock, lora_send_queue)
     sender_thread.start()
 
     receive_thread = LoraReceiver(node, node_lock, bluetooth_send_queue)
     receive_thread.start()
 
-    try:
-        console_input_thread.join()
-    except KeyboardInterrupt:
-        print("exiting by keyboard interrupt")
+    if sys.argv[1] == "-i":
+        console_input_thread = ConsoleInput(lora_send_queue)
+        console_input_thread.start()
+
+        try:
+            console_input_thread.join()
+        except KeyboardInterrupt:
+            print("exiting by keyboard interrupt")
+    else:
+        while True:
+            time.sleep(10000)
 
     print("Programm exited gracefully")
