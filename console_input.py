@@ -6,6 +6,7 @@ class ConsoleInput(Thread):
     def __init__(self, queue: Queue):
         Thread.__init__(self, daemon=True)
         self.queue = queue
+        self.setName("ConsoleInput")
 
     def add_queue(self, message: str):
         self.queue.put(message)
