@@ -7,7 +7,7 @@ import os
 from threading import Lock, Thread
 import pyprctl
 from queue import Queue
-from serial import Serial
+from serial import Serial, SerialException
 import select
 import inotify.adapters
 import inotify.constants
@@ -29,15 +29,19 @@ class Bluetooth_input(Thread):
     def run(self):
         while True:
             if os.path.exists('/dev/rfcomm0'):
-                ser = Serial('/dev/rfcomm0')
-                while ser.isOpen():
-                    select.select([ser], [], [ser])
-                    data = ser.readline()
-                    data = data.decode('utf-8')
-                    print(data)
-                    self.input_queue.put(data)
+                try:
+                    ser = Serial('/dev/rfcomm0')
+                    while ser.isOpen():
+                        select.select([ser], [], [ser])
+                        data = ser.readline()
+                        data = data[:-2].decode('utf-8')
+                        print(data)
+                        self.input_queue.put(data)
+                except SerialException:
+                    print("BTdevice disconnected")
 
             else:
+                print("listening for incoming connection")
                 for event in self.inotify_adapter.event_gen(yield_nones=False):
                     (_, type_names, path, filename) = event
                     if filename == self.rfcomm:
