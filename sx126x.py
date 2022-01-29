@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# This file is part of SpiegieMon. https://github.com/Spiegie/Spiegiemon_piedition/
+# (C) 2022 Michael Spiegelhalter <michael.spi@web.de>
+
+# parts here are based on code from WaveShare and modified/fixed:
+# https://www.waveshare.com/w/upload/9/9d/SX126X_LoRa_HAT_Demo.zip
+
 # This file is used for LoRa and Raspberry Pi4B/Pi Zero
 # This is the main class file that is often used for LoRa parameters settings
 
