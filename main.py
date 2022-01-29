@@ -66,10 +66,7 @@ class BluetoothSender(Thread):
             data = self.lora_input.get()
             try:
                 self.client_socket.send(data)
-            except OSError as e:
-                if self.client_socket.connected:
-                    print("Unexpected error:")
-                    print(e)
+            except bluetooth.btcommon.BluetoothError:
                 break
 
 
