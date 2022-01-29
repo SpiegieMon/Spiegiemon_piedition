@@ -54,7 +54,7 @@ class Bluetooth_input(Thread):
 
 
 class BluetoothSender(Thread):
-    def __init(self, client_socket: BluetoothSocket, lora_input: Queue):
+    def __init__(self, client_socket: BluetoothSocket, lora_input: Queue):
         Thread.__init__(self, daemon=True)
         self.client_socket = client_socket
         self.stop_running = False
