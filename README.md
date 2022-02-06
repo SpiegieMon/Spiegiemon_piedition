@@ -82,7 +82,8 @@ The message has the following format:
 - Raspberry Pi 2 Model B Rev 1.2 using Raspbian 11
 (with bluetooth dongle)
 - Raspberry Pi 4 Model B Rev 1.2 using Raspbian 10
+- Raspberry Pi Zero W Rev 1.1 using Raspbian 11 (LoRa not confirmed yet)
 
-# Contrubution
+# Contribution
 
 If you want to contribute to this Project, you are welcome to fork this repository and submit a pull request.
